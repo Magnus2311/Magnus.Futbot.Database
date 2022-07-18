@@ -10,6 +10,6 @@ namespace Magnus.Futbot.Database.Consumers
         {
         }
 
-        public override string Topic => "EA.Players.All2";
+        public override string Topic => "EA.Players.All";
     }
 }

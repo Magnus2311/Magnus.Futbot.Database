@@ -14,7 +14,7 @@ namespace Magnus.Futbot.Database.Repositories
             var options = new ChangeStreamOptions { FullDocument = ChangeStreamFullDocumentOption.UpdateLookup };
             var pipeline = new EmptyPipelineDefinition<ChangeStreamDocument<PlayerDocument>>().Match("{ operationType: { $in: [ 'insert', 'delete' ] } }");
 
-            Cursor = _collection.Watch<ChangeStreamDocument<PlayerDocument>>(pipeline, options);
+            Cursor = _collection.Watch(pipeline, options);
         }
 
         public IChangeStreamCursor<ChangeStreamDocument<PlayerDocument>> Cursor { get; }
@@ -24,5 +24,8 @@ namespace Magnus.Futbot.Database.Repositories
 
         public async Task<IEnumerable<PlayerDocument>> GetAll()
             => (await _collection.FindAsync(FilterDefinition<PlayerDocument>.Empty)).ToList();
+
+        public async Task Add(PlayerDocument player)
+            => await _collection.InsertOneAsync(player);
     }
 }

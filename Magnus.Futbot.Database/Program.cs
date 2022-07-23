@@ -13,7 +13,7 @@ var mapperConfig = new MapperConfiguration(mc =>
 
 IMapper mapper = mapperConfig.CreateMapper();
 
-IHost host = Host.CreateDefaultBuilder(args)
+var hostBuilder = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
         services.AddSingleton(mapper);
@@ -28,7 +28,8 @@ IHost host = Host.CreateDefaultBuilder(args)
             .AddTransient<PlayersService>();
 
         services.AddHostedService<PlayersWorker>();
-    })
-    .Build();
+    });
+
+var host = hostBuilder.Build();
 
 await host.RunAsync();

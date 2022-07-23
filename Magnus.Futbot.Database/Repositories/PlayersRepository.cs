@@ -14,10 +14,13 @@ namespace Magnus.Futbot.Database.Repositories
             var options = new ChangeStreamOptions { FullDocument = ChangeStreamFullDocumentOption.UpdateLookup };
             var pipeline = new EmptyPipelineDefinition<ChangeStreamDocument<PlayerDocument>>().Match("{ operationType: { $in: [ 'insert', 'delete' ] } }");
 
-            Cursor = _collection.Watch(pipeline, options);
+            Task.Run(() =>
+            {
+                Cursor = _collection.Watch(pipeline, options);
+            });
         }
 
-        public IChangeStreamCursor<ChangeStreamDocument<PlayerDocument>> Cursor { get; }
+        public IChangeStreamCursor<ChangeStreamDocument<PlayerDocument>>? Cursor { get; private set; }
 
         public async Task AddPlayers(IEnumerable<PlayerDocument> players)
             => await _collection.InsertManyAsync(players);

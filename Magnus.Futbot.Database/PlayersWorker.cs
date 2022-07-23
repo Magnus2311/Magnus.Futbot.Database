@@ -17,7 +17,6 @@ namespace Magnus.Futbot.Database
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _playerConsumer.Subscribe();
             while (!stoppingToken.IsCancellationRequested)
             {
                 var message = _playerConsumer.Consume(stoppingToken);

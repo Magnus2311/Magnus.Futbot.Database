@@ -11,5 +11,7 @@ namespace Magnus.Futbot.Database.Consumers
         }
 
         public override string Topic => "EA.Players.All";
+
+        public override string GroupId => "Magnus.Database.Players.Consumer";
     }
 }

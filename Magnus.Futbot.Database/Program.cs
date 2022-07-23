@@ -18,16 +18,24 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
     {
         services.AddSingleton(mapper);
 
-        services.AddSingleton<PlayerConsumer>();
+        services
+            .AddSingleton<PlayerConsumer>()
+            .AddSingleton<AddProfileConsumer>();
 
         services
             .AddTransient<PlayersRepository>()
             .AddTransient<ProfilesRepository>();
 
         services
-            .AddTransient<PlayersService>();
+            .AddTransient<PlayersService>()
+            .AddTransient<ProfilesService>();
 
-        services.AddHostedService<PlayersWorker>();
+        services
+            .AddSingleton<AddProfilesWorker>()
+            .AddSingleton<PlayersWorker>();
+
+        services
+            .AddHostedService<BackgroundWorker>();
     });
 
 var host = hostBuilder.Build();

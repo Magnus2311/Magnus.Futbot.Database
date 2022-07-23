@@ -3,7 +3,7 @@ using Magnus.Futbot.Database.Services;
 
 namespace Magnus.Futbot.Database
 {
-    public class PlayersWorker : BackgroundService
+    public class PlayersWorker
     {
         private readonly PlayerConsumer _playerConsumer;
         private readonly PlayersService _playersService;
@@ -15,7 +15,7 @@ namespace Magnus.Futbot.Database
             _playersService = playersService;
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        public async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {

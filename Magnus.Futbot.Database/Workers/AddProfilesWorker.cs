@@ -3,7 +3,7 @@ using Magnus.Futbot.Database.Services;
 
 namespace Magnus.Futbot.Database
 {
-    public class AddProfilesWorker
+    public class AddProfilesWorker : BackgroundService
     {
         private readonly AddProfileConsumer _addProfileConsumer;
         private readonly ProfilesService _profilesService;
@@ -15,16 +15,17 @@ namespace Magnus.Futbot.Database
             _profilesService = profilesService;
         }
 
-        public async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            while (true)
+        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+            => Task.Run(async () =>
             {
-                var message = _addProfileConsumer.Consume(stoppingToken);
-                if (message != null)
+                while (!stoppingToken.IsCancellationRequested)
                 {
-                    await _profilesService.Add(message.Message.Value);
+                    var message = _addProfileConsumer.Consume(stoppingToken);
+                    if (message != null)
+                    {
+                        await _profilesService.Add(message.Message.Value);
+                    }
                 }
-            }
-        }
+            }, stoppingToken);
     }
 }

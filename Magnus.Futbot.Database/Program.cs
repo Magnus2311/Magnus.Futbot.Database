@@ -35,7 +35,8 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
             .AddSingleton<PlayersWorker>();
 
         services
-            .AddHostedService<BackgroundWorker>();
+            .AddHostedService<PlayersWorker>()
+            .AddHostedService<AddProfilesWorker>();
     });
 
 var host = hostBuilder.Build();

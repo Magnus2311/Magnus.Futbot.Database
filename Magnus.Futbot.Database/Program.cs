@@ -4,7 +4,7 @@ using Magnus.Futbot.Database.Consumers;
 using Magnus.Futbot.Database.Helpers;
 using Magnus.Futbot.Database.Repositories;
 using Magnus.Futbot.Database.Services;
-
+using Magnus.Futbot.Database.Workers;
 
 var mapperConfig = new MapperConfiguration(mc =>
 {
@@ -20,7 +20,8 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
 
         services
             .AddSingleton<PlayerConsumer>()
-            .AddSingleton<AddProfileConsumer>();
+            .AddSingleton<AddProfileConsumer>()
+            .AddSingleton<ProfilesConsumer>();
 
         services
             .AddTransient<PlayersRepository>()
@@ -36,7 +37,8 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
 
         services
             .AddHostedService<PlayersWorker>()
-            .AddHostedService<AddProfilesWorker>();
+            .AddHostedService<AddProfilesWorker>()
+            .AddHostedService<ProfilesWorker>();
     });
 
 var host = hostBuilder.Build();

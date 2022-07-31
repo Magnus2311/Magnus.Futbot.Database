@@ -10,7 +10,8 @@ namespace Magnus.Futbot.Database.Helpers
         public MapperProfile()
         {
             CreateMap<PlayerDTO, PlayerDocument>();
-            CreateMap<AddProfileDTO, ProfileDocument>();
+            CreateMap<AddProfileDTO, ProfileDocument>().ReverseMap();
+            CreateMap<ProfileDTO, ProfileDocument>().ReverseMap();
         }
     }
 }

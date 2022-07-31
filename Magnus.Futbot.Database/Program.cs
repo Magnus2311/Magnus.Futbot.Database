@@ -1,7 +1,9 @@
 using AutoMapper;
 using Magnus.Futbot.Database;
 using Magnus.Futbot.Database.Consumers;
+using Magnus.Futbot.Database.Consumers.Requests;
 using Magnus.Futbot.Database.Helpers;
+using Magnus.Futbot.Database.Kafka.Producers;
 using Magnus.Futbot.Database.Repositories;
 using Magnus.Futbot.Database.Services;
 using Magnus.Futbot.Database.Workers;
@@ -21,7 +23,11 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
         services
             .AddSingleton<PlayerConsumer>()
             .AddSingleton<AddProfileConsumer>()
-            .AddSingleton<ProfilesConsumer>();
+            .AddSingleton<ProfilesConsumer>()
+            .AddSingleton<ProfilesRequestsConsumer>();
+
+        services
+            .AddTransient<ProfilesProducer>();
 
         services
             .AddTransient<PlayersRepository>()
@@ -38,7 +44,8 @@ var hostBuilder = Host.CreateDefaultBuilder(args)
         services
             .AddHostedService<PlayersWorker>()
             .AddHostedService<AddProfilesWorker>()
-            .AddHostedService<ProfilesWorker>();
+            .AddHostedService<ProfilesWorker>()
+            .AddHostedService<ProfilesRequestsWorker>();
     });
 
 var host = hostBuilder.Build();

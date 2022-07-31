@@ -3,6 +3,7 @@ using Magnus.Futbot.Common.Models.DTOs;
 using Magnus.Futbot.Common.Models.Selenium.Profiles;
 using Magnus.Futbot.Database.Models;
 using Magnus.Futbot.Database.Repositories;
+using MongoDB.Bson;
 
 namespace Magnus.Futbot.Database.Services
 {
@@ -31,5 +32,8 @@ namespace Magnus.Futbot.Database.Services
                 await _profilesRepository.Update(newDoc);
             }
         }
+
+        public async Task<IEnumerable<ProfileDTO>> GetAllByUserId(string userId)
+            => _mapper.Map<IEnumerable<ProfileDTO>>(await _profilesRepository.GetAll(new ObjectId(userId)));
     }
 }
